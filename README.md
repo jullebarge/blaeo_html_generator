@@ -1,6 +1,2 @@
-# SteamGifts_Cards
-Show cards available for games on Steamgifts by coloring the Steam icon: 
-- green, the game has cards
-- red, the game doesn't have cards
-- yellow, the game requires age check
-
+# BLAEO Html Generator
+Generate the Html code used to make a new post. You can copy it from any list view.
