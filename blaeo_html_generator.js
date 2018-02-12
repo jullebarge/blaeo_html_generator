@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BLAEO Game Post Generator
 // @namespace    https://www.backlog-assassins.net/
-// @version      0.1
+// @version      0.2
 // @description  add a button on game list to generate an html post for each game
 // @author       JulLeBarge
 // @match        https://www.backlog-assassins.net/users/*/games
@@ -63,7 +63,7 @@
 			tempHtml += "<h4 class='media-heading'>" + appname + "</h4>";
 			tempHtml += "<span>NOTE</span><br>" + apptime + ", <a href='http://steamcommunity.com/id/jullebarge/stats/" +  appid + "/?tab=achievements'>" +  appachievements + "</a>";
 			tempHtml += "</div></div></div><div id='post-" +  appid + "' class='panel-body collapse' aria-expanded='false' style=''>";
-			tempHtml += "<font color='green'><b>Pros:</b></font><br><br><font color='red'><b>Cons:</b></font><br><br><font color='blue'><b>Conclusion:</b></font></div>";
+			tempHtml += "<font color='green'><b>Pros:</b></font><br><br><font color='red'><b>Cons:</b></font><br><br><font color='blue'><b>Conclusion:</b></font></div></div>";
             tempHtml += "</textarea></li>";
 			tempHtml = tempHtml.replace(/'/g, '"');
             var $icon = $(tempHtml).insertAfter($row.find('li:nth-child(2)'));
