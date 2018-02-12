@@ -2,7 +2,7 @@
 // @name         BLAEO Game Post Generator
 // @namespace    https://www.backlog-assassins.net/
 // @version      0.1
-// @description  Add a text area on game list to generate an html post for each game
+// @description  add a button on game list to generate an html post for each game
 // @author       JulLeBarge
 // @match        https://www.backlog-assassins.net/users/*/games
 // @match        https://www.backlog-assassins.net/*/games/*
@@ -42,7 +42,7 @@
 			var tempAchPourcent = tempAch[0];
             var tempAchNb = tempAch[1].slice(1, tempAch[1].indexOf(' '));
 			var tempAchTotal = tempAch[1].slice(tempAch[1].lastIndexOf(' '),tempAch[1].length-1);
-
+			
 			appachievements = tempAchNb + " of " + tempAchTotal + " achievements (" + tempAchPourcent + ")";
 			/*console.log("tempAchPourcent: " + tempAchPourcent);
 			console.log("tempAchNb: " + tempAchNb);
