@@ -1,17 +1,24 @@
 // ==UserScript==
 // @name         BLAEO Game Post Generator with Button
 // @namespace    https://www.backlog-assassins.net/
-// @version      0.4
+// @version      0.5
 // @description  add a button on game list to generate an html post for each game
 // @author       JulLeBarge
 // @match        https://www.backlog-assassins.net/users/*/games
 // @match        https://www.backlog-assassins.net/*/games/*
 // @match        https://www.backlog-assassins.net/lists/*
-// @grant	 GM_setClipboard
+// @grant        GM_setClipboard
+// @require      https://raw.githubusercontent.com/kamranahmedse/jquery-toast-plugin/bd761d335919369ed5a27d1899e306df81de44b8/dist/jquery.toast.min.js
 // ==/UserScript==
+
+function injectStylesheet(url) {
+    $('head').append('<link rel="stylesheet" href="'+url+'" type="text/css" />');
+}
 
 (function() {
     'use strict';
+
+    injectStylesheet("https://cdn.rawgit.com/kamranahmedse/jquery-toast-plugin/bd761d335919369ed5a27d1899e306df81de44b8/dist/jquery.toast.min.css");
 
 	var addPostGenerator = function() {
 		if (!$('.game-table').length) {
@@ -19,7 +26,7 @@
             return;
         }
 
-	// add icon to each game cell
+		// add icon to each game cell
         var icons = [];
         $('.game-table tbody tr').each(function() {
             var $row = $(this);
@@ -39,12 +46,12 @@
 				apptime = $tds.eq(2).text() + " playtime";
 			}
 
-		var tempAch = appachievements.split("\n");
-		var tempAchPourcent = tempAch[0];
-            	var tempAchNb = tempAch[1].slice(1, tempAch[1].indexOf(' '));
-		var tempAchTotal = tempAch[1].slice(tempAch[1].lastIndexOf(' '),tempAch[1].length-1);
+			var tempAch = appachievements.split("\n");
+			var tempAchPourcent = tempAch[0];
+            var tempAchNb = tempAch[1].slice(1, tempAch[1].indexOf(' '));
+			var tempAchTotal = tempAch[1].slice(tempAch[1].lastIndexOf(' '),tempAch[1].length-1);
 
-		appachievements = tempAchNb + " of " + tempAchTotal + " achievements (" + tempAchPourcent + ")";
+			appachievements = tempAchNb + " of " + tempAchTotal + " achievements (" + tempAchPourcent + ")";
 
 			var tempHtml = "<div class='panel panel-success'>";
 			tempHtml += "<div class='panel-heading' data-toggle='collapse' data-target='#post-" +  appid + "' aria-expanded='true'>";
@@ -66,7 +73,22 @@
 			document.getElementById ("Button-" +  appid).addEventListener (
 				"click", function () {
 				GM_setClipboard(tempHtml);
-				alert("Html copied in the clipboard");
+				//alert("Html copied in the clipboard");
+                //GM_notification("Html code copied in the clipboard", "BLAEO",'https://www.backlog-assassins.net/logo-32x32.png', false, 50);
+                    $.toast({
+                        text: 'Html code copied in the clipboard',
+                        heading: 'BLAEO', // Optional heading to be shown on the toast
+                        loader: false,
+                        icon: 'success',
+                        loaderBg: '#9EC600',
+                        showHideTransition: 'fade', // fade, slide or plain
+                        allowToastClose: false, // Boolean value true or false
+                        hideAfter: 1000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+                        stack: false, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+                        position: 'bottom-center',
+                        bgColor: '#7e7',
+                        textColor: 'black'
+                    });
 				}, false
 			);
             icons.push($icon);
