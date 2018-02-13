@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BLAEO Game Post Generator with Button
 // @namespace    https://www.backlog-assassins.net/
-// @version      0.5
+// @version      0.6
 // @description  add a button on game list to generate an html post for each game
 // @author       JulLeBarge
 // @match        https://www.backlog-assassins.net/users/*/games
@@ -53,17 +53,29 @@ function injectStylesheet(url) {
 
 			appachievements = tempAchNb + " of " + tempAchTotal + " achievements (" + tempAchPourcent + ")";
 
-			var tempHtml = "<div class='panel panel-success'>";
-			tempHtml += "<div class='panel-heading' data-toggle='collapse' data-target='#post-" +  appid + "' aria-expanded='true'>";
-			tempHtml += "<div class='game game-beaten game-media' data-item='data-" + appid + "'>";
-			tempHtml += "<div style='float: left; padding-right: 10px;'>";
-			tempHtml += "<a href='http://store.steampowered.com/app/" + appid + "'>";
-			tempHtml += "<img alt='" + appname + "' src='https://steamcdn-a.akamaihd.net/steam/apps/" + appid + "/capsule_184x69.jpg'></a>";
-			tempHtml += "</div><div class='media-body'>";
-			tempHtml += "<h4 class='media-heading'>" + appname + "</h4>";
-			tempHtml += "<span>NOTE</span><br>" + apptime + ", <a href='http://steamcommunity.com/id/jullebarge/stats/" +  appid + "/?tab=achievements'>" +  appachievements + "</a>";
-			tempHtml += "</div></div></div><div id='post-" +  appid + "' class='panel-body collapse' aria-expanded='false' style=''>";
-			tempHtml += "<font color='green'><b>Pros:</b></font><br><br><font color='red'><b>Cons:</b></font><br><br><font color='blue'><b>Conclusion:</b></font></div></div>";
+			var tempHtml = "<div class='panel panel-success'>" + "\n";
+            tempHtml += "\t" + "<div class='panel-heading'>" + "\n";
+			tempHtml += "\t" + "\t" + "<div class='game game-beaten game-media' data-item='data-" + appid + "'>" + "\n";
+			tempHtml += "\t" + "\t" + "\t" + "<div style='float: left; padding-right: 10px;'>";
+			tempHtml += "<img alt='" + appname + "' src='https://steamcdn-a.akamaihd.net/steam/apps/" + appid + "/header.jpg' style='min-height: 90px; max-height: 90px; width: 192.55px;'></div>"  + "\n";
+			tempHtml += "\t" + "\t" + "\t" + "<div class='media-body'>" + "\n";
+			tempHtml += "\t" + "\t" + "\t" + "\t" + "<h4 class='media-heading'>" + appname + " <a href='http://store.steampowered.com/app/" + appid + "' target='_blank'>";
+            tempHtml += "<font size='2px'><i aria-hidden='true' class='fa fa-external-link'></i></font></a></h4>" + "\n";
+            tempHtml += "\t" + "\t" + "\t" + "\t" + "<div><i aria-hidden='true' class='fa fa-star'></i> NOTE</div>" + "\n";
+            tempHtml += "\t" + "\t" + "\t" + "\t" + "<div><i class='fa fa-clock-o' aria-hidden='true'></i> " + apptime + "</div>" + "\n";
+            tempHtml += "\t" + "\t" + "\t" + "\t" + "<span><i aria-hidden='true' class='fa fa-trophy'></i><a href='http://steamcommunity.com/id/jullebarge/stats/" +  appid + "/?tab=achievements' target='_blank'> " +  appachievements + "</a></span>" + "\n";
+            tempHtml += "\t" + "\t" + "\t" + "\t" + "<div data-target='#post-" +  appid + "' data-toggle='collapse' style='float: right; padding-right:10px;' class='collapsed' aria-expanded='false'>More <i class='fa fa-level-down'></i></div>" + "\n";
+			tempHtml += "\t" + "\t" + "\t" + "\t" + "</div>" + "\n";
+            tempHtml += "\t" + "\t" + "\t" + "</div>" + "\n";
+            tempHtml += "\t" + "\t" + "</div>" + "\n";
+            tempHtml += "\t" + "<div id='post-" +  appid + "' class='panel-body collapse' aria-expanded='false' style=''>" + "\n";
+			tempHtml += "\t" + "\t" + "<font color='green'><b>Pros:</b></font>" + "\n";
+            tempHtml += "\t" + "\t" + "<br><br>" + "\n";
+            tempHtml += "\t" + "\t" + "<font color='red'><b>Cons:</b></font>" + "\n";
+            tempHtml += "\t" + "\t" + "<br><br>" + "\n";
+            tempHtml += "\t" + "\t" + "<font color='blue'><b>Conclusion:</b></font>" + "\n";
+            tempHtml += "\t" + "</div>" + "\n";
+            tempHtml += "</div>";
 
 			tempHtml = tempHtml.replace(/'/g, '"');
 
@@ -73,8 +85,6 @@ function injectStylesheet(url) {
 			document.getElementById ("Button-" +  appid).addEventListener (
 				"click", function () {
 				GM_setClipboard(tempHtml);
-				//alert("Html copied in the clipboard");
-                //GM_notification("Html code copied in the clipboard", "BLAEO",'https://www.backlog-assassins.net/logo-32x32.png', false, 50);
                     $.toast({
                         text: 'Html code copied in the clipboard',
                         heading: 'BLAEO', // Optional heading to be shown on the toast
