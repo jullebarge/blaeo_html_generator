@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BLAEO Game Post Generator with Button
 // @namespace    https://www.backlog-assassins.net/
-// @version      0.3
+// @version      0.4
 // @description  add a button on game list to generate an html post for each game
 // @author       JulLeBarge
 // @match        https://www.backlog-assassins.net/users/*/games
@@ -60,7 +60,7 @@
 
 			tempHtml = tempHtml.replace(/'/g, '"');
 
-            var buttonHtml = "<li><a class='fa fa-clipboard' style='text-decoration:none;' id='Button-" +  appid + "' href=''><i></i></a></li>";
+            var buttonHtml = "<li><a class='fa fa-clipboard' style='text-decoration:none;' id='Button-" +  appid + "' href='#'><i></i></a></li>";
             var $icon = $(buttonHtml).insertAfter($row.find('li:nth-child(2)'));
 
 			document.getElementById ("Button-" +  appid).addEventListener (
