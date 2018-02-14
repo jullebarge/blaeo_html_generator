@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         BLAEO Game Post Generator with Button
+// @name         BLAEO Game Post Generator
 // @namespace    https://www.backlog-assassins.net/
-// @version      0.6
+// @version      0.7
 // @description  add a button on game list to generate an html post for each game
 // @author       JulLeBarge
 // @match        https://www.backlog-assassins.net/users/*/games
@@ -30,32 +30,71 @@ function injectStylesheet(url) {
         var icons = [];
         $('.game-table tbody tr').each(function() {
             var $row = $(this);
+            var appclass =  $row.attr('class').substr(10);
+            var paneltype = "";
+            switch(appclass) {
+                case "never-played":
+                    paneltype = "default";
+                    break;
+                case "wont-play":
+                    paneltype = "danger";
+                    break;
+                case "beaten":
+                    paneltype = "success";
+                    break;
+                case "unfinished":
+                    paneltype = "warning";
+                    break;
+                case "completed":
+                    paneltype = "info";
+                    break;
+                default:
+                    paneltype = "default";
+            }
+            //console.log(appclass);
+            // Find the App id with the link to Steam page
             var appid = /\/(\d+)$/.exec($row.find('a.steam').attr('href'))[1];
 			var $tds = $row.find('td');
-			var appname = $tds.eq(1).clone().find('a').remove().end().text().replace(/(\r\n|\n|\r)/gm,"");
+            // Find the app name
+			var appname = "";
             var appachievements = "";
             var apptime = "";
-			if ($tds.count == 4){
-				//console.log("4 colonnes");
+            // Make sure you have the right number of columns (some upserscripts add a column)
+            //console.log("number of columns = " + $tds.length);
+			if ($tds.length == 5){
+                appname = $tds.eq(1).clone().find('a').remove().end().text().replace(/(\r\n|\n|\r)/gm,"");
 				appachievements = $tds.eq(3).text().replace(/(\r\n|\n|\r)/,"");
-				apptime = $tds.eq(4).text() + " playtime";
+				apptime = $tds.eq(4).text().replace(/(\r\n|\n|\r)/,"") + " playtime";
 			}
-			else {
-				//console.log("3 colonnes");
-				appachievements = $tds.eq(3).text().replace(/(\r\n|\n|\r)/,"");
-				apptime = $tds.eq(2).text() + " playtime";
+			else if ($tds.length == 4) {
+                appname = $tds.eq(0).clone().find('a').remove().end().text().replace(/(\r\n|\n|\r)/gm,"");
+				appachievements = $tds.eq(2).text().replace(/(\r\n|\n|\r)/,"");
+				apptime = $tds.eq(3).text().replace(/(\r\n|\n|\r)/,"") + " playtime";
+			}
+            else {
+                appname = $tds.eq(0).clone().find('a').remove().end().text().replace(/(\r\n|\n|\r)/gm,"");
+				appachievements = $tds.eq(1).text().replace(/(\r\n|\n|\r)/,"");
+				apptime = $tds.eq(2).text().replace(/(\r\n|\n|\r)/,"") + " playtime";
 			}
 
-			var tempAch = appachievements.split("\n");
-			var tempAchPourcent = tempAch[0];
-            var tempAchNb = tempAch[1].slice(1, tempAch[1].indexOf(' '));
-			var tempAchTotal = tempAch[1].slice(tempAch[1].lastIndexOf(' '),tempAch[1].length-1);
+            //console.log(appachievements);
+            // Process achievements text to split values
+            if (appachievements != "—"){
+                var tempAch = appachievements.split("\n");
+                var tempAchPourcent = tempAch[0];
+                var tempAchNb = tempAch[1].slice(1, tempAch[1].indexOf(' '));
+                var tempAchTotal = tempAch[1].slice(tempAch[1].lastIndexOf(' '),tempAch[1].length-1);
+                // Create the new text with this format:x of y achievements (%)
+                appachievements = tempAchNb + " of " + tempAchTotal + " achievements (" + tempAchPourcent + ")";
+                appachievements = "<a href='http://steamcommunity.com/id/jullebarge/stats/" +  appid + "/?tab=achievements' target='_blank'> " +  appachievements + "</a>";
+            }
+            else
+                appachievements = " No achievements";
 
-			appachievements = tempAchNb + " of " + tempAchTotal + " achievements (" + tempAchPourcent + ")";
-
-			var tempHtml = "<div class='panel panel-success'>" + "\n";
+            // Create the HTML code
+			var tempHtml = "<div class='panel panel-" + paneltype + "'>" + "\n";
             tempHtml += "\t" + "<div class='panel-heading'>" + "\n";
-			tempHtml += "\t" + "\t" + "<div class='game game-beaten game-media' data-item='data-" + appid + "'>" + "\n";
+			tempHtml += "\t" + "\t" + "<div class='game game-" + appclass + " game-media' data-item='data-" + appid + "'>" + "\n";
 			tempHtml += "\t" + "\t" + "\t" + "<div style='float: left; padding-right: 10px;'>";
 			tempHtml += "<img alt='" + appname + "' src='https://steamcdn-a.akamaihd.net/steam/apps/" + appid + "/header.jpg' style='min-height: 90px; max-height: 90px; width: 192.55px;'></div>"  + "\n";
 			tempHtml += "\t" + "\t" + "\t" + "<div class='media-body'>" + "\n";
@@ -63,7 +102,7 @@ function injectStylesheet(url) {
             tempHtml += "<font size='2px'><i aria-hidden='true' class='fa fa-external-link'></i></font></a></h4>" + "\n";
             tempHtml += "\t" + "\t" + "\t" + "\t" + "<div><i aria-hidden='true' class='fa fa-star'></i> NOTE</div>" + "\n";
             tempHtml += "\t" + "\t" + "\t" + "\t" + "<div><i class='fa fa-clock-o' aria-hidden='true'></i> " + apptime + "</div>" + "\n";
-            tempHtml += "\t" + "\t" + "\t" + "\t" + "<span><i aria-hidden='true' class='fa fa-trophy'></i><a href='http://steamcommunity.com/id/jullebarge/stats/" +  appid + "/?tab=achievements' target='_blank'> " +  appachievements + "</a></span>" + "\n";
+            tempHtml += "\t" + "\t" + "\t" + "\t" + "<span><i aria-hidden='true' class='fa fa-trophy'></i>" + appachievements + "</span>" + "\n";
             tempHtml += "\t" + "\t" + "\t" + "\t" + "<div data-target='#post-" +  appid + "' data-toggle='collapse' style='float: right; padding-right:10px;' class='collapsed' aria-expanded='false'>More <i class='fa fa-level-down'></i></div>" + "\n";
 			tempHtml += "\t" + "\t" + "\t" + "\t" + "</div>" + "\n";
             tempHtml += "\t" + "\t" + "\t" + "</div>" + "\n";
@@ -77,11 +116,14 @@ function injectStylesheet(url) {
             tempHtml += "\t" + "</div>" + "\n";
             tempHtml += "</div>";
 
+            // Replace quotes
 			tempHtml = tempHtml.replace(/'/g, '"');
 
+            // Create the button
             var buttonHtml = "<li><a class='fa fa-clipboard' style='text-decoration:none;' id='Button-" +  appid + "' href='#'><i></i></a></li>";
             var $icon = $(buttonHtml).insertAfter($row.find('li:nth-child(2)'));
 
+            // Add the click function to copy Html to clipboard and display a toast message
 			document.getElementById ("Button-" +  appid).addEventListener (
 				"click", function () {
 				GM_setClipboard(tempHtml);
