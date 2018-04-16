@@ -103,7 +103,7 @@ function injectStylesheet(url) {
             tempHtml += "\t" + "\t" + "\t" + "\t" + "<div><i aria-hidden='true' class='fa fa-star'></i> NOTE</div>" + "\n";
             tempHtml += "\t" + "\t" + "\t" + "\t" + "<div><i class='fa fa-clock-o' aria-hidden='true'></i> " + apptime + "</div>" + "\n";
             tempHtml += "\t" + "\t" + "\t" + "\t" + "<span><i aria-hidden='true' class='fa fa-trophy'></i>" + appachievements + "</span>" + "\n";
-            tempHtml += "\t" + "\t" + "\t" + "\t" + "<div data-target='#post-" +  appid + "' data-toggle='collapse' style='float: right; padding-right:10px;' class='collapsed' aria-expanded='false'>More <i class='fa fa-level-down'></i></div>" + "\n";
+            tempHtml += "\t" + "\t" + "\t" + "\t" + "<div data-target='#post-" +  appid + "' data-toggle='collapse' style='float: right; padding-right:10px;' class='collapsed' aria-expanded='false'>Review <i class='fa fa-level-down'></i></div>" + "\n";
 			tempHtml += "\t" + "\t" + "\t" + "\t" + "</div>" + "\n";
             tempHtml += "\t" + "\t" + "\t" + "</div>" + "\n";
             tempHtml += "\t" + "\t" + "</div>" + "\n";
