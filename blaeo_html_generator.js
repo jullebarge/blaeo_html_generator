@@ -62,17 +62,17 @@ function injectStylesheet(url) {
             // Make sure you have the right number of columns (some upserscripts add a column)
             //console.log("number of columns = " + $tds.length);
 			if ($tds.length == 5){
-                appname = $tds.eq(1).clone().find('a').remove().end().text().replace(/(\r\n|\n|\r)/gm,"");
+                		appname = $tds.eq(1).clone().find('a').remove().end().text().replace(/(\r\n|\n|\r)/gm,"");
 				appachievements = $tds.eq(3).text().replace(/(\r\n|\n|\r)/,"");
 				apptime = $tds.eq(4).text().replace(/(\r\n|\n|\r)/,"") + " playtime";
 			}
 			else if ($tds.length == 4) {
-                appname = $tds.eq(0).clone().find('a').remove().end().text().replace(/(\r\n|\n|\r)/gm,"");
+                		appname = $tds.eq(1).clone().find('a').remove().end().text().replace(/(\r\n|\n|\r)/gm,"");
 				appachievements = $tds.eq(2).text().replace(/(\r\n|\n|\r)/,"");
 				apptime = $tds.eq(3).text().replace(/(\r\n|\n|\r)/,"") + " playtime";
 			}
             else {
-                appname = $tds.eq(0).clone().find('a').remove().end().text().replace(/(\r\n|\n|\r)/gm,"");
+                		appname = $tds.eq(1).clone().find('a').remove().end().text().replace(/(\r\n|\n|\r)/gm,"");
 				appachievements = $tds.eq(1).text().replace(/(\r\n|\n|\r)/,"");
 				apptime = $tds.eq(2).text().replace(/(\r\n|\n|\r)/,"") + " playtime";
 			}
