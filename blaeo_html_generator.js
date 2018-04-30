@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BLAEO Game Post Generator
 // @namespace    https://www.backlog-assassins.net/
-// @version      0.7
+// @version      0.8
 // @description  add a button on game list to generate an html post for each game
 // @author       JulLeBarge
 // @match        https://www.backlog-assassins.net/users/*/games
